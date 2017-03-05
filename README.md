@@ -111,7 +111,23 @@ This will output cachegrind files (named after the request URI and timestamp) to
 `/tmp` inside the WordPress container.
 
 
+## Seed MariaDB database
+
+The `mariadb` image supports initializing the database with content by mounting
+a volume to the database container at `/docker-entrypoint-initdb.d`. See the
+[MariaDB Docker docs][mariadb-docs] for more information.
+
+
+## Seed `wp-content`
+
+You can seed `wp-content` with files (e.g., an uploads folder) by mounting a
+volume to the `wordpress` container at `/tmp/wordpress/init-wp-content`.
+Everything in that folder will be copied to your installation's `wp-content`
+folder.
+
+
 [build-status]: https://travis-ci.org/chriszarate/docker-compose-wordpress.svg?branch=master
 [travis-ci]: https://travis-ci.org/chriszarate/docker-compose-wordpress
 [image]: https://hub.docker.com/r/chriszarate/wordpress/
 [docker-compose]: https://docs.docker.com/compose/
+[mariadb-docs]: https://github.com/docker-library/docs/tree/master/mariadb#initializing-a-fresh-instance
