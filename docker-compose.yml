@@ -1,0 +1,49 @@
+version: "2"
+
+services:
+  wordpress:
+    image: "chriszarate/wordpress"
+    environment:
+      PHPUNIT_TEST_DIR: "/var/www/html/wp-content/plugins/my-plugin"
+      VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
+      WORDPRESS_ACTIVATE_PLUGINS: "my-plugin" # plugin folder relative to /wp-content/plugins/
+      WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
+      WORDPRESS_SITE_TITLE: "Project"
+      XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug"
+    depends_on:
+      - "mysql"
+    networks:
+      - "front"
+      - "back"
+    volumes:
+      - ".:/var/www/html/wp-content/plugins/my-plugin"
+  mysql:
+    image: "mariadb"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - "back"
+  mysql_phpunit:
+    image: "mariadb"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress_phpunit"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - "back"
+  proxy:
+    image: "jwilder/nginx-proxy"
+    ports:
+      - "80:80"
+    networks:
+      front:
+        aliases:
+          - "${DOCKER_DEV_DOMAIN}"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+networks:
+  front: {}
+  back: {}
