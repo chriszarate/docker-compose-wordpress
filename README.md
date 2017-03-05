@@ -11,7 +11,7 @@ complete development environment that boots up quickly.
 
 ## Set up
 
-1. Clone this repo.
+1. Clone or fork this repo.
 
 2. Put your plugin or theme code in the root of this folder and adjust the 
    `services/wordpress/volumes` section of `docker-compose.yml` so that it
@@ -52,6 +52,20 @@ Please refer to the [Docker Compose documentation][docker-compose] for more
 information about starting, stopping, and interacting with your environment.
 
 Log in to `/wp-admin/` with `wordpress` / `wordpress`.
+
+
+## Update environment
+
+To pull in the latest images (including `chriszarate/wordpress`), make sure your
+clone/fork of this repo is up to date, then run the following commands. Note
+that this will **destroy** your current environment, including the database, and
+reset it to its initial state.
+
+```sh
+docker-compose down
+docker-compose pull
+docker-compose up -d
+```
 
 
 ## WP-CLI
