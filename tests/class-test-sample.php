@@ -1,6 +1,6 @@
 <?php
 /**
- * Class SampleTest
+ * Class Test_Sample
  *
  * @package My_Plugin
  */
@@ -8,12 +8,12 @@
 /**
  * Sample test case.
  */
-class SampleTest extends WP_UnitTestCase {
+class Test_Sample extends WP_UnitTestCase {
 
 	/**
 	 * A single example test.
 	 */
-	function test_sample() {
+	function test_example() {
 		// Replace this with some actual testing code.
 		$this->assertTrue( class_exists( 'My_Plugin' ) );
 	}
