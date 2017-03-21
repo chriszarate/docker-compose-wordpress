@@ -84,7 +84,7 @@ docker-compose exec wordpress wp scaffold plugin-tests my-plugin
 ```
 
 This is not required, however, and you can bring your own test scaffold. Either
-way, set the `PHPUNIT_TEST_DIR` environment variable to the path containing
+way, in docker-compose.yml, set the `PHPUNIT_TEST_DIR` environment variable to the path containing
 `phpunit.xml`. Tests are run against a separate MariaDB instance to ensure
 isolation.
 
