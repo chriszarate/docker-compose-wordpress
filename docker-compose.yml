@@ -2,13 +2,14 @@ version: "2"
 
 services:
   wordpress:
-    image: "chriszarate/wordpress:4.7.2"
+    image: "chriszarate/wordpress:4.7.5"
     environment:
       PHPUNIT_TEST_DIR: "/var/www/html/wp-content/plugins/my-plugin"
       VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
       WORDPRESS_ACTIVATE_PLUGINS: "my-plugin" # plugin folder relative to /wp-content/plugins/
       WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
       WORDPRESS_SITE_TITLE: "Project"
+      WORDPRESS_SITE_URL: "http://${DOCKER_DEV_DOMAIN}"
       XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug"
     depends_on:
       - "mysql"
