@@ -8,6 +8,7 @@ services:
       VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
       WORDPRESS_ACTIVATE_PLUGINS: "my-plugin" # plugin folder relative to /wp-content/plugins/
       WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
+      WORDPRESS_CONFIG_EXTRA: "require_once( __DIR__ . '/local-config.php' );"
       WORDPRESS_SITE_TITLE: "Project"
       WORDPRESS_SITE_URL: "http://${DOCKER_DEV_DOMAIN}"
       XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug"
@@ -17,6 +18,8 @@ services:
       - "front"
       - "back"
     volumes:
+      - "./conf/php-local.ini:/usr/local/etc/php/conf.d/local.ini:ro"
+      - "./conf/wp-local-config.php:/var/www/html/local-config.php:ro"
       - ".:/var/www/html/wp-content/plugins/my-plugin"
   mysql:
     image: "mariadb"
@@ -44,6 +47,7 @@ services:
           - "${DOCKER_DEV_DOMAIN}"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./conf/nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro"
 
 networks:
   front: {}
