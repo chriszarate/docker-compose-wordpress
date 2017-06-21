@@ -2,7 +2,7 @@ version: "2"
 
 services:
   wordpress:
-    image: "chriszarate/wordpress:4.7.5"
+    image: "chriszarate/wordpress:4.8.0"
     environment:
       PHPUNIT_TEST_DIR: "/var/www/html/wp-content/plugins/my-plugin"
       VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
