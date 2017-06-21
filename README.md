@@ -71,7 +71,7 @@ docker-compose up -d
 ## WP-CLI
 
 ```sh
-docker-compose exec wordpress wp [command]
+docker-compose exec --user www-data wordpress wp [command]
 ```
 
 
@@ -80,7 +80,7 @@ docker-compose exec wordpress wp [command]
 The tests in this example repo were generated with WP-CLI:
 
 ```sh
-docker-compose exec wordpress wp scaffold plugin-tests my-plugin
+docker-compose exec --user www-data wordpress wp scaffold plugin-tests my-plugin
 ```
 
 This is not required, however, and you can bring your own test scaffold. Either
