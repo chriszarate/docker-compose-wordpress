@@ -6,7 +6,7 @@ This is an example repo for how one might wire up Docker Compose with the
 [chriszarate/wordpress][image] image for plugin or theme development. In
 addition to WP-CLI, PHPUnit, Composer, Xdebug, and the WordPress unit testing
 suite, the `docker-compose.yml` file adds MariaDB and `nginx-proxy` to create a
-complete development environment that boots up quickly.
+complete development environment that starts quickly.
 
 
 ## Set up
@@ -23,9 +23,9 @@ complete development environment that boots up quickly.
 
 3. Add `project.dev` (or your chosen hostname) to `/etc/hosts`, e.g.:
 
-```
-127.0.0.1 localhost project.dev
-```
+   ```
+   127.0.0.1 localhost project.dev
+   ```
 
    If you choose a different hostname, edit `.env` as well.
 
@@ -70,6 +70,8 @@ docker-compose up -d
 
 ## WP-CLI
 
+You will probably want to [create a shell alias][3] for this:
+
 ```sh
 docker-compose exec --user www-data wordpress wp [command]
 ```
@@ -84,9 +86,9 @@ docker-compose exec --user www-data wordpress wp scaffold plugin-tests my-plugin
 ```
 
 This is not required, however, and you can bring your own test scaffold. Either
-way, in docker-compose.yml, set the `PHPUNIT_TEST_DIR` environment variable to the path containing
-`phpunit.xml`. Tests are run against a separate MariaDB instance to ensure
-isolation.
+way, in docker-compose.yml, set the `PHPUNIT_TEST_DIR` environment variable to
+the path containing `phpunit.xml`. Tests are run against a separate MariaDB
+instance to ensure isolation.
 
 ```sh
 docker-compose exec wordpress tests
