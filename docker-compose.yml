@@ -19,7 +19,7 @@ services:
     volumes:
       - ".:/var/www/html/wp-content/plugins/my-plugin"
   mysql:
-    image: "mariadb"
+    image: "mariadb:10.2"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "wordpress"
@@ -27,7 +27,7 @@ services:
     networks:
       - "back"
   mysql_phpunit:
-    image: "mariadb"
+    image: "mariadb:10.2"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "wordpress_phpunit"
@@ -35,7 +35,7 @@ services:
     networks:
       - "back"
   proxy:
-    image: "jwilder/nginx-proxy"
+    image: "jwilder/nginx-proxy:alpine"
     ports:
       - "80:80"
     networks:
