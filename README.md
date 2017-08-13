@@ -85,13 +85,25 @@ The tests in this example repo were generated with WP-CLI:
 docker-compose exec --user www-data wordpress wp scaffold plugin-tests my-plugin
 ```
 
-This is not required, however, and you can bring your own test scaffold. Either
-way, in docker-compose.yml, set the `PHPUNIT_TEST_DIR` environment variable to
-the path containing `phpunit.xml`. Tests are run against a separate MariaDB
-instance to ensure isolation.
+This is not required, however, and you can bring your own test scaffold. The
+important thing is that you provide a script to install your test dependencies,
+and that these dependencies are staged in `/tmp`.
+
+The testing environment is provided by a separate Docker Compose file
+(`docker-compose.phpunit.yml`) to ensure isolation. To use it, you must first
+start it, then manually run your test installation script. These commands work
+for this example repo, but may not work for you if you use a different test
+scaffold (note that, in this environment, your code is mapped to `/app`):
 
 ```sh
-docker-compose exec wordpress tests
+docker-compose -f docker-compose.phpunit.yml up -d
+docker-compose -f docker-compose.phpunit.yml run wordpress_phpunit /app/bin/install-wp-tests.sh wordpress_test root '' mysql_phpunit latest true
+```
+
+Now you are ready to run PHPUnit. Repeat this command as necessary:
+
+```sh
+docker-compose -f docker-compose.phpunit.yml run wordpress_phpunit phpunit
 ```
 
 

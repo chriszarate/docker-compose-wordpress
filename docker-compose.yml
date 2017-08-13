@@ -4,7 +4,6 @@ services:
   wordpress:
     image: "chriszarate/wordpress:4.8.1"
     environment:
-      PHPUNIT_TEST_DIR: "/var/www/html/wp-content/plugins/my-plugin"
       VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
       WORDPRESS_ACTIVATE_PLUGINS: "my-plugin" # plugin folder relative to /wp-content/plugins/
       WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
@@ -23,14 +22,6 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "wordpress"
-      MYSQL_ROOT_PASSWORD: ""
-    networks:
-      - "back"
-  mysql_phpunit:
-    image: "mariadb:10.2"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "wordpress_phpunit"
       MYSQL_ROOT_PASSWORD: ""
     networks:
       - "back"
