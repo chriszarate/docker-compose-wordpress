@@ -2,7 +2,7 @@ version: "2"
 
 services:
   wordpress_phpunit:
-    image: "chriszarate/wordpress-phpunit"
+    image: "chriszarate/wordpress-phpunit:6.0.6"
     volumes:
       - ".:/app"
       - "testsuite:/tmp"
