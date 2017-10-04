@@ -21,10 +21,10 @@ complete development environment that starts quickly.
    edit the `WORDPRESS_ACTIVATE_PLUGINS` or `WORDPRESS_ACTIVATE_THEME`
    environment variables.
 
-3. Add `project.dev` (or your chosen hostname) to `/etc/hosts`, e.g.:
+3. Add `project.test` (or your chosen hostname) to `/etc/hosts`, e.g.:
 
    ```
-   127.0.0.1 localhost project.dev
+   127.0.0.1 localhost project.test
    ```
 
    If you choose a different hostname, edit `.env` as well.
