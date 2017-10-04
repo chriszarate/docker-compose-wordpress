@@ -96,14 +96,14 @@ for this example repo, but may not work for you if you use a different test
 scaffold (note that, in this environment, your code is mapped to `/app`):
 
 ```sh
-docker-compose -f docker-compose.phpunit.yml up -d
-docker-compose -f docker-compose.phpunit.yml run wordpress_phpunit /app/bin/install-wp-tests.sh wordpress_test root '' mysql_phpunit latest true
+docker-compose -f docker-compose.yml -f docker-compose.phpunit.yml up -d
+docker-compose -f docker-compose.phpunit.yml run --rm wordpress_phpunit /app/bin/install-wp-tests.sh wordpress_test root '' mysql_phpunit latest true
 ```
 
 Now you are ready to run PHPUnit. Repeat this command as necessary:
 
 ```sh
-docker-compose -f docker-compose.phpunit.yml run wordpress_phpunit phpunit
+docker-compose -f docker-compose.phpunit.yml run --rm wordpress_phpunit phpunit
 ```
 
 
