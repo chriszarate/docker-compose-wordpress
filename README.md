@@ -4,8 +4,8 @@
 
 This is an example repo for how one might wire up Docker Compose with the
 [chriszarate/wordpress][image] image for plugin or theme development. In
-addition to WP-CLI, PHPUnit, Composer, Xdebug, and the WordPress unit testing
-suite, the `docker-compose.yml` file adds MariaDB and `nginx-proxy` to create a
+addition to WP-CLI, PHPUnit, Xdebug, and the WordPress unit testing suite,
+the `docker-compose.yml` file adds MariaDB and `nginx-proxy` to create a
 complete development environment that starts quickly.
 
 
