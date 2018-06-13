@@ -67,7 +67,7 @@ docker-compose run --rm wp-cli wp [command]
 
 ## Running tests (PHPUnit)
 
-The tests in this example repo were generated with WP-CLI:
+The tests in this example repo were generated with WP-CLI, e.g.:
 
 ```sh
 docker-compose run --rm wp-cli wp scaffold plugin-tests my-plugin
