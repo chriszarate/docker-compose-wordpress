@@ -95,6 +95,17 @@ docker-compose -f docker-compose.phpunit.yml run --rm wordpress_phpunit phpunit
 ```
 
 
+## Changing the hostname
+
+You can change the hostname from the default `project.test` by adding a `.env`
+file at the project root and defining the `DOCKER_DEV_DOMAIN` environment
+variable:
+
+```
+DOCKER_DEV_DOMAIN=myproject.test
+```
+
+
 ## Seed MariaDB database
 
 The `mariadb` image supports initializing the database with content by mounting
