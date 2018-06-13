@@ -2,11 +2,9 @@
 
 [![Build status][build-status]][travis-ci]
 
-This is an example repo for how one might wire up Docker Compose with the
-[chriszarate/wordpress][image] image for plugin or theme development. In
-addition to WP-CLI, PHPUnit, Xdebug, and the WordPress unit testing suite,
-the `docker-compose.yml` file adds MariaDB and `nginx-proxy` to create a
-complete development environment that starts quickly.
+This is an example repo for how one might wire up Docker Compose for local
+plugin or theme development. It provides WordPress, MariaDB, WP-CLI, PHPUnit,
+and the WordPress unit testing suite.
 
 
 ## Set up
@@ -17,17 +15,11 @@ complete development environment that starts quickly.
    `services/wordpress/volumes` section of `docker-compose.yml` so that it
    syncs to the appropriate directory.
 
-   If you would like your plugin or theme activated when the container starts,
-   edit the `WORDPRESS_ACTIVATE_PLUGINS` or `WORDPRESS_ACTIVATE_THEME`
-   environment variables.
-
-3. Add `project.test` (or your chosen hostname) to `/etc/hosts`, e.g.:
+3. Add `project.test` to `/etc/hosts`, e.g.:
 
    ```
    127.0.0.1 localhost project.test
    ```
-
-   If you choose a different hostname, edit `.env` as well.
 
 
 ## Start environment
@@ -51,21 +43,17 @@ docker-compose logs wordpress
 Please refer to the [Docker Compose documentation][docker-compose] for more
 information about starting, stopping, and interacting with your environment.
 
-Log in to `/wp-admin/` with `wordpress` / `wordpress`.
 
-
-## Update environment
-
-To pull in the latest images (including `chriszarate/wordpress`), make sure your
-clone/fork of this repo is up to date, then run the following commands. Note
-that this will **destroy** your current environment, including the database, and
-reset it to its initial state.
+## Install WordPress
 
 ```sh
-docker-compose down
-docker-compose pull
-docker-compose up -d
+docker-compose run --rm wp-cli install-wp
 ```
+
+Log in to `http://project.test/wp-admin/` with `wordpress` / `wordpress`.
+
+Alternatively, you can navigate to `http://project.test/` and manually perform
+the famous five-second install.
 
 
 ## WP-CLI
@@ -73,7 +61,7 @@ docker-compose up -d
 You will probably want to [create a shell alias][3] for this:
 
 ```sh
-docker-compose exec --user www-data wordpress wp [command]
+docker-compose run --rm wp-cli wp [command]
 ```
 
 
@@ -82,7 +70,7 @@ docker-compose exec --user www-data wordpress wp [command]
 The tests in this example repo were generated with WP-CLI:
 
 ```sh
-docker-compose exec --user www-data wordpress wp scaffold plugin-tests my-plugin
+docker-compose run --rm wp-cli wp scaffold plugin-tests my-plugin
 ```
 
 This is not required, however, and you can bring your own test scaffold. The
@@ -107,24 +95,6 @@ docker-compose -f docker-compose.phpunit.yml run --rm wordpress_phpunit phpunit
 ```
 
 
-## Xdebug
-
-Xdebug is installed but needs the IP of your local machine to connect to your
-local debugging client. Edit `.env` and populate the `DOCKER_LOCAL_IP`
-environment variable with your machine's (local network) IP address. The default
-`idekey` is `xdebug`.
-
-You can enable profiling by appending instructions to `XDEBUG_CONFIG` in
-`docker-compose.yml`, e.g.:
-
-```
-XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug profiler_enable=1 profiler_output_name=%R.%t.out"
-```
-
-This will output cachegrind files (named after the request URI and timestamp) to
-`/tmp` inside the WordPress container.
-
-
 ## Seed MariaDB database
 
 The `mariadb` image supports initializing the database with content by mounting
@@ -132,16 +102,23 @@ a volume to the database container at `/docker-entrypoint-initdb.d`. See the
 [MariaDB Docker docs][mariadb-docs] for more information.
 
 
-## Seed `wp-content`
+## Troubleshooting
 
-You can seed `wp-content` with files (e.g., an uploads folder) by mounting a
-volume to the `wordpress` container at `/tmp/wordpress/init-wp-content`.
-Everything in that folder will be copied to your installation's `wp-content`
-folder.
+If your stack is not responding, the most likely cause is that a container has
+stopped or failed to start. Check to see if all of the containers are "Up":
+
+```
+docker-compose ps
+```
+
+If not, inspect the logs for that container, e.g.:
+
+```
+docker-compose logs wordpress
+```
 
 
 [build-status]: https://travis-ci.org/chriszarate/docker-compose-wordpress.svg?branch=master
 [travis-ci]: https://travis-ci.org/chriszarate/docker-compose-wordpress
-[image]: https://hub.docker.com/r/chriszarate/wordpress/
 [docker-compose]: https://docs.docker.com/compose/
 [mariadb-docs]: https://github.com/docker-library/docs/tree/master/mariadb#initializing-a-fresh-instance

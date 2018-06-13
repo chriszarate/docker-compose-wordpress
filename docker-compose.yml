@@ -1,22 +1,35 @@
-version: "2"
+version: "3"
 
 services:
   wordpress:
-    image: "chriszarate/wordpress:4.9.1"
+    image: "wordpress:${WP_VERSION:-4.9.6}-php${PHP_VERSION:-7.2}-apache"
     environment:
-      VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN}"
-      WORDPRESS_ACTIVATE_PLUGINS: "my-plugin" # plugin folder relative to /wp-content/plugins/
-      WORDPRESS_ACTIVATE_THEME: ""   # theme folder relative to /wp-content/themes/
-      WORDPRESS_SITE_TITLE: "Project"
-      WORDPRESS_SITE_URL: "http://${DOCKER_DEV_DOMAIN}"
-      XDEBUG_CONFIG: "remote_host=${DOCKER_LOCAL_IP} idekey=xdebug"
+      VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN:-project.test}"
+      WORDPRESS_DB_HOST: "mysql"
+      WORDPRESS_DB_NAME: "wordpress"
+      WORDPRESS_DB_PASSWORD: ""
+      WORDPRESS_DB_USER: "root"
     depends_on:
       - "mysql"
     networks:
       - "front"
       - "back"
     volumes:
-      - ".:/var/www/html/wp-content/plugins/my-plugin"
+      - "wp:/var/www/html:rw"
+      - ".:/var/www/html/wp-content/plugins/my-plugin:ro"
+  wp-cli:
+    image: "wordpress:cli-php${PHP_VERSION:-7.2}"
+    environment:
+      - APACHE_RUN_USER="www-data"
+      - APACHE_RUN_GROUP="www-data"
+    depends_on:
+      - "mysql"
+    networks:
+      - "back"
+    volumes:
+      - "wp:/var/www/html:rw"
+      - "./bin/install-wp.sh:/usr/local/bin/install-wp:ro"
+      - ".:/var/www/html/wp-content/plugins/my-plugin:ro"
   mysql:
     image: "mariadb:10.2"
     environment:
@@ -32,10 +45,13 @@ services:
     networks:
       front:
         aliases:
-          - "${DOCKER_DEV_DOMAIN}"
+          - "${DOCKER_DEV_DOMAIN:-project.test}"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
 
 networks:
   front: {}
   back: {}
+
+volumes:
+  wp: {}
