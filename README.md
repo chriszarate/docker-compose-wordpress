@@ -81,7 +81,9 @@ The testing environment is provided by a separate Docker Compose file
 (`docker-compose.phpunit.yml`) to ensure isolation. To use it, you must first
 start it, then manually run your test installation script. These commands work
 for this example repo, but may not work for you if you use a different test
-scaffold (note that, in this environment, your code is mapped to `/app`):
+scaffold.
+
+Note that, in the PHPUnit container, your code is mapped to `/app`.
 
 ```sh
 docker-compose -f docker-compose.yml -f docker-compose.phpunit.yml up -d
