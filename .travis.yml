@@ -34,7 +34,7 @@ before_script:
     fi
   - |
     composer global require wp-coding-standards/wpcs
-    composer global require dealerdirect/phpcodesniffer-composer-installer
+    phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 
 script:
   - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
