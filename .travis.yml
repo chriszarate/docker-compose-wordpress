@@ -13,15 +13,11 @@ branches:
 
 php:
   - 5.6
-  - 7.2
-
-env:
-  - WP_VERSION=latest WP_MULTISITE=0
 
 matrix:
   include:
     - php: 5.6
-      env: WP_VERSION=latest WP_MULTISITE=1
+      env: WP_VERSION=latest
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -30,3 +26,4 @@ before_script:
 
 script:
   - phpunit
+  - WP_MULTISITE=1 phpunit
