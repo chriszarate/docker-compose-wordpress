@@ -64,7 +64,7 @@ You will probably want to [create a shell alias][3] for this:
 docker-compose run --rm wp-cli wp [command]
 ```
 
-Import and Export to WP from host directory:
+Import to and export from the WordPress database:
 
 ```sh
 docker-compose run --rm wp-cli wp db import - < dump.sql
