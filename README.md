@@ -130,6 +130,33 @@ If not, inspect the logs for that container, e.g.:
 docker-compose logs wordpress
 ```
 
+## Extending
+
+Extend any of the predefined service images (wordpress, mysql, wp-cli, proxy) by adding your own [Dockerfile](https://docs.docker.com/engine/reference/builder) and replacing the docker-compose service `image` parameter to reference your Dockerfile. For example to add vim, soap and Xdebug, you make a file called `Dockerfile`:
+
+```
+FROM "wordpress:${WP_VERSION:-5.2.1}-php${PHP_VERSION:-7.3}-apache"
+# Or perhaps different default versions: "wordpress:${WP_VERSION:-5.5.1}-php${PHP_VERSION:-7.4}-apache"
+
+RUN apt-get update -y \
+  && apt-get install -y \
+      libxml2-dev \
+      vim \
+  && apt-get clean -y \
+  && docker-php-ext-install soap  \
+  && docker-php-ext-enable soap \
+  && pecl install xdebug \
+  && docker-php-ext-enable xdebug
+
+COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d
+
+```
+Where you have added your `docker-php-ext-xdebug.ini` file alongside `docker-compose.yml`.
+
+Then you replace the `image` reference in the `docker-compose.yml` file's `wordpress` service section to just a `.` which will look for `Dockerfile` in the same directory. [Multiple Dockerfiles](https://stackoverflow.com/a/49811906/2223106) are possible as well.
+
+Run `docker-compose up -d --build {name-of-service-or-none-to-rebuild-all}` to rebuild that service. A usefile clean-up command to be aware of is [docker image prune](https://docs.docker.com/engine/reference/commandline/image_prune).
+
 
 [build-status]: https://travis-ci.org/chriszarate/docker-compose-wordpress.svg?branch=master
 [travis-ci]: https://travis-ci.org/chriszarate/docker-compose-wordpress
