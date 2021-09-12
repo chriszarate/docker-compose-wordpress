@@ -39,6 +39,9 @@ services:
       MYSQL_ROOT_PASSWORD: ""
     networks:
       - "back"
+    volumes:
+      - "db:/var/lib/mysql:rw"
+
   proxy:
     image: "jwilder/nginx-proxy:alpine"
     ports:
@@ -56,3 +59,4 @@ networks:
 
 volumes:
   wp: {}
+  db: {}
